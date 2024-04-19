@@ -36,8 +36,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		count = 0;
 		screen = 'S';
 		background = new ImageIcon("blastman_background.png");
-		Ship = new ImageIcon("ship.png");
-		lives = 5;
+	//	Ship = new ImageIcon("ship.png");
 		p = new Sound();
 		p2 = new Sound();
 		music = new Sound();
