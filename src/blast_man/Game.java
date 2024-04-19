@@ -1,4 +1,3 @@
-package blast_man;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -9,11 +8,12 @@ import java.awt.event.*;
 public class Game extends JPanel implements Runnable, KeyListener, MouseListener, MouseMotionListener {
 	private BufferedImage back;
 	private int key, count, lives;
-	private ImageIcon background, Ship;
+	private ImageIcon background;
+	private Player play;
 	private Sound music;
 	private boolean start, win, moveRight;
 	private char screen;
-//	private PlayerShip player;
+	private blastman player;
 	private Sound p;
 	private Sound p2;
 	private double currtime1;
@@ -31,12 +31,14 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 
 		win = false;
 		start = true;
+		play = new Player();
 		moveRight = true;
 		key = -1;
 		count = 0;
 		screen = 'S';
-		background = new ImageIcon("blastman_background.png");
-	//	Ship = new ImageIcon("ship.png");
+		background = new ImageIcon("space.jpg");
+		player = new blastman(100, 500, 50, 50);
+		lives = 5;
 		p = new Sound();
 		p2 = new Sound();
 		music = new Sound();
@@ -168,7 +170,6 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 	
 
 	public void checkwin() {
-		if (aliens.isEmpty()) {
 			screen = 'W';
 			music.playmusic("winner.wav");
 
@@ -176,7 +177,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 
 		}
 
-	}
+	
 
 	public void drawStartScreen(Graphics g2d) {
 		g2d.setFont(new Font("Times new roman", Font.BOLD, 50));
@@ -205,28 +206,10 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 
 	}
 
-	public boolean checkaliensbottom() {
-		for (AlienShip a : aliens) {
-			if (a.getY() + a.getH() >= getHeight()) {
-				return true;
 
-			}
 
-		}
-
-		return false;
-
-	}
-
-	public void drawalien(Graphics g2d) {
-		for (AlienShip a : aliens) {
-			g2d.drawImage(a.getPic().getImage(), a.getX(), a.getY(), a.getW(), a.getH(), this);
-
-		}
-
-	}
-
-	public void drawplayership(Graphics g2d) {
+	
+	public void drawpblastman(Graphics g2d) {
 		g2d.drawImage(player.getPic().getImage(), player.getX(), player.getY(), player.getW(), player.getH(), this);
 
 	}
@@ -347,10 +330,10 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 	}
 
 	public void move() {
-		//for (int i = fmissiles.size() - 1; i >= 0; i--) {
-		//	fmissiles.get(i).move();
-		//	if (fmissiles.get(i).getY() > getHeight()) {
-		//		fmissiles.remove(i);
+		for (int i = fmissiles.size() - 1; i >= 0; i--) {
+			fmissiles.get(i).move();
+			if (fmissiles.get(i).getY() > getHeight()) {
+				fmissiles.remove(i);
 
 			}
 
@@ -406,7 +389,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 	@Override
 
 	public void mouseMoved(MouseEvent m) {
-	//	player.setX(m.getX());
+		player.setX(m.getX());
 
 	}
 
@@ -420,7 +403,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 
 	public void mousePressed(MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1) {
-		//	playerMissile(e.getX() + (player.getW() / 4));
+			playerMissile(e.getX() + (player.getW() / 4));
 
 		}
 
