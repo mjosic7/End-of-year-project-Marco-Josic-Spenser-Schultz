@@ -12,9 +12,9 @@ public class Sound
 			Clip clip = AudioSystem.getClip();
 			AudioInputStream inputStream= AudioSystem.getAudioInputStream(soundFile);
 			clip.open(inputStream);
-			clip.loop(1);
 			clip.start();
 		}
+		
 	catch(Exception e)
 		{
 		System.out.println(e);
