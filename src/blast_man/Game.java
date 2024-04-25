@@ -12,16 +12,16 @@ private BufferedImage back;
 private int key;
 private Sound s;
 private Sound p;
-private Pictures wo;
-private Pictures f;
-private Pictures k;
+private Pictures player; 
+
 private int randx;
 private boolean GameOver;
 private int score;
 private double time;
 private double curtime;
+private ArrayList<Pictures> lasers;
 
-// hi
+
 
 
 
@@ -30,19 +30,16 @@ private double curtime;
 public Game() {
 back=null;
 randx=(int) (Math.random()*400-0+1)+0;
-wo=new Pictures("blastman_background.png",200,400,200,300);
+player=new Pictures("blastman_background.png",200,400,200,300);
 s= new Sound();
 p= new Sound();
 new Thread(this).start();
-this.addKeyListener(this);
-k=new Pictures("scientist.png", 400, 400, 70, 90);
-f=new Pictures("zap.png", randx,0,70,90,0,0);
-
-time=System.currentTimeMillis();
+this.addKeyListener(this);time=System.currentTimeMillis();
 curtime=0;
 score = 0;
 key=-1;
 p.playmusic("music.wav");
+lasers = new ArrayList<Pictures>();
 
 
 
@@ -78,45 +75,26 @@ public void paint (Graphics g)
 
 Graphics2D twoDgraph = (Graphics2D)g;
 
-//take a snap shop of the current screen and same it as an image
-
-//that is the exact same width and height as the current screen
-
 if (back==null) {
 
 back =(BufferedImage) (createImage(getWidth(), getHeight()));
 
 }
 
-//create a graphics reference to the back ground image
-
-//we will draw all changes on the background image
-
 Graphics g2d = back.createGraphics();
-
-//this clears the old image, like an EtchASketch. If you see the old image when we learn motion, you deleted this line.
 
 g2d.clearRect(0, 0, getSize().width, getSize().height);
 
 //START CODING GRAPHICS HERE
-g2d.drawImage(new ImageIcon(wo.getPic()).getImage(),0,0,getWidth(),getHeight(),this);
+drawPlayer(g2d);
 g2d.drawImage(new ImageIcon(k.getPic()).getImage(),k.getX(),k.getY(),k.getW(),k.getH(), this);
 g2d.drawString("Score: "+ score,54,60);
 g2d.setFont(newFont("chiller", Font.BOLD,44));
+// GRAPHICS ABOVE
 
 g2d.drawString(new DecimalFormat("#0.00").format(curtime),20,30);
 
-if(k.Collision(f))
-{
-randx=(int) (Math.random()*800-0+1)+0;
-f.setX(randx);
-f.setY(0);
-s.playmusic("splat.wav");
-}
-else moveFruit(g2d);
-if (f.getY()+300==800) {
-	GameOver= true;
-}
+
 if (GameOver) {
 	g2d.setFont(new Font("chiller", Font.BOLD,54));
 	g2d.drawString("GAMEOVER", 300, 300);
@@ -134,19 +112,39 @@ else {curtime=(System.currentTimeMillis()-time)/1000;
 twoDgraph.drawImage(back, 0, 0, null);
 }
 
+public void drawPlayer(Graphics g2d) {
+	g2d.drawImage(new ImageIcon(player.getPic()).getImage(),0,0,getWidth(),getHeight(),this);
+}
 
+public void drawLasers(Graphics g2d) {
+	for (Pictures laser : lasers) {
+		g2d.drawImage(new ImageIcon(laser.getPic()).getImage(),laser.getX(),laser.getY(),laser.getW(),laser.getH(), this);
+	}
+}
+
+public void collision() {
+	for (Pictures laser : lasers) {
+	
+		if(player.Collision(laser)) {
+			GameOver= true;
+}
+else moveLaser();
+}
+}	
+
+
+public void moveLaser() {
+	for (Pictures laser : lasers) {
+		laser.fall();
+	}
+}
 private Font newFont(String string, int bold, int i) {
 	// TODO Auto-generated method stub
 	return null;
 }
 
-public void move() {
-	k.move();
-}
-
-public void moveFruit(Graphics g2d) {
-	g2d.drawImage(new ImageIcon(f.getPic()).getImage(),f.getX(),f.getY(),f.getW(),f.getH(), this);
-	f.fall();
+public void movePlayer() {
+	player.move();
 }
 
 public void keyTyped(KeyEvent e) {
@@ -163,6 +161,10 @@ public void keyReleased(KeyEvent e) {
 	if(key==37||key==39)
 		k.setDx(0);
 	
+}
+
+public int randomInt() {
+	return ((int)(Math.random() * 1600));
 }
 }
 
