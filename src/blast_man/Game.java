@@ -9,11 +9,11 @@ import java.util.*;
 
 public class Game extends JPanel implements Runnable,KeyListener{
 private BufferedImage back;
-private int key;
+private Pictures background;
+int key;
 private Sound s;
 private Sound p;
 private Pictures player; 
-
 private int randx;
 private boolean GameOver;
 private int score;
@@ -28,9 +28,9 @@ private ArrayList<Pictures> lasers;
 
 
 public Game() {
-back=null;
 randx=(int) (Math.random()*400-0+1)+0;
-player=new Pictures("blastman_background.png",200,400,200,300);
+background=new Pictures("blastman_background.png");
+player=new Pictures("scientist.png",400,400,70,90);
 s= new Sound();
 p= new Sound();
 new Thread(this).start();
@@ -86,8 +86,9 @@ Graphics g2d = back.createGraphics();
 g2d.clearRect(0, 0, getSize().width, getSize().height);
 
 //START CODING GRAPHICS HERE
-drawPlayer(g2d);
-g2d.drawImage(new ImageIcon(k.getPic()).getImage(),k.getX(),k.getY(),k.getW(),k.getH(), this);
+
+g2d.drawImage(new ImageIcon(background.getPic()).getImage(),0,0,getWidth(),getHeight(),this);
+g2d.drawImage(new ImageIcon(player.getPic()).getImage(),player.getX(),player.getY(),player.getW(),player.getH(), this);
 g2d.drawString("Score: "+ score,54,60);
 g2d.setFont(newFont("chiller", Font.BOLD,44));
 // GRAPHICS ABOVE
@@ -104,8 +105,7 @@ if (GameOver) {
 	
 
 	
-else {curtime=(System.currentTimeMillis()-time)/1000;
- move(); }
+
 
 //This line tells the program to draw everything above. If you delete this, nothing will show up.
 
@@ -113,7 +113,7 @@ twoDgraph.drawImage(back, 0, 0, null);
 }
 
 public void drawPlayer(Graphics g2d) {
-	g2d.drawImage(new ImageIcon(player.getPic()).getImage(),0,0,getWidth(),getHeight(),this);
+	
 }
 
 public void drawLasers(Graphics g2d) {
@@ -152,14 +152,14 @@ public void keyTyped(KeyEvent e) {
 public void keyPressed(KeyEvent e) {
 	System.out.println(key);
 	if(key==37)
-		k.setDx(-2);
+		player.setDx(-1);
 	if(key==39)
-		k.setDx(2);
+		player.setDx(1);
 }
 public void keyReleased(KeyEvent e) {
 	key=e.getKeyCode();
 	if(key==37||key==39)
-		k.setDx(0);
+		player.setDx(0);
 	
 }
 

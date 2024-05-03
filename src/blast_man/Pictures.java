@@ -26,6 +26,18 @@ public class Pictures {
 		
 	}
 	
+	public Pictures(String s) {
+		pic = s;
+		x=0;
+		y=0;
+		dx=0;
+		dy=0;
+		width=0;
+		height=0;
+		movedn=false;
+		movert=false;
+	}
+	
 public Pictures(String s, int x1, int y1, int w1, int h1) {
 		
 		pic=s;
