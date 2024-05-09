@@ -86,8 +86,11 @@ Graphics g2d = back.createGraphics();
 g2d.clearRect(0, 0, getSize().width, getSize().height);
 
 //START CODING GRAPHICS HERE
-
+lasermove();
 g2d.drawImage(new ImageIcon(background.getPic()).getImage(),0,0,getWidth(),getHeight(),this);
+addLasers();
+drawLasers(g2d);
+movePlayer();
 g2d.drawImage(new ImageIcon(player.getPic()).getImage(),player.getX(),player.getY(),player.getW(),player.getH(), this);
 g2d.drawString("Score: "+ score,54,60);
 g2d.setFont(newFont("chiller", Font.BOLD,44));
@@ -101,9 +104,8 @@ if (GameOver) {
 	g2d.drawString("GAMEOVER", 300, 300);
 }
 
-//if (Paddle.getx+Paddle.getheight) {
-	
 
+	
 	
 
 
@@ -111,14 +113,25 @@ if (GameOver) {
 
 twoDgraph.drawImage(back, 0, 0, null);
 }
-
-public void drawPlayer(Graphics g2d) {
+public void lasermove() {
+	for (Pictures laser : lasers)
+	laser.setY(laser.getY()+1) ;
 	
+	//lasers.setdy(1);
+}
+public void addLasers() {
+	double random = Math.random();
+	if (random < .995) {
+		return;
+	}
+	lasers.add(new Pictures("zap.png", randomInt(), 10, 20, 30));
+	System.out.println("laser added");
 }
 
 public void drawLasers(Graphics g2d) {
 	for (Pictures laser : lasers) {
 		g2d.drawImage(new ImageIcon(laser.getPic()).getImage(),laser.getX(),laser.getY(),laser.getW(),laser.getH(), this);
+		//System.out.println("laser drawn");
 	}
 }
 

@@ -77,8 +77,8 @@ public Pictures(String s, int x1, int y1, int dx1, int dy1, int w, int h, boolea
 public void setDx(int c) {
 	dx=c;
 }
-public void setDy(int c) {
-	dy=c;
+public void setDy(int dy1) {
+	y+=dy1;
 }
 public void setY(int c) {
 	y=c;
