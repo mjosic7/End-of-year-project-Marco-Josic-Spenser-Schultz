@@ -38,7 +38,7 @@ this.addKeyListener(this);time=System.currentTimeMillis();
 curtime=0;
 score = 0;
 key=-1;
-p.playmusic("music.wav");
+p.playmusic("music1.wav");
 lasers = new ArrayList<Pictures>();
 
 
@@ -86,11 +86,14 @@ Graphics g2d = back.createGraphics();
 g2d.clearRect(0, 0, getSize().width, getSize().height);
 
 //START CODING GRAPHICS HERE
-lasermove();
 g2d.drawImage(new ImageIcon(background.getPic()).getImage(),0,0,getWidth(),getHeight(),this);
+if (!GameOver) {
+collision();
+lasermove();
 addLasers();
 drawLasers(g2d);
 movePlayer();
+}
 g2d.drawImage(new ImageIcon(player.getPic()).getImage(),player.getX(),player.getY(),player.getW(),player.getH(), this);
 g2d.drawString("Score: "+ score,54,60);
 g2d.setFont(newFont("chiller", Font.BOLD,44));
@@ -140,9 +143,8 @@ public void collision() {
 	
 		if(player.Collision(laser)) {
 			GameOver= true;
-}
-else moveLaser();
-}
+		}
+	}
 }	
 
 
@@ -163,6 +165,7 @@ public void movePlayer() {
 public void keyTyped(KeyEvent e) {
 }
 public void keyPressed(KeyEvent e) {
+	key=e.getKeyCode();
 	System.out.println(key);
 	if(key==37)
 		player.setDx(-1);
